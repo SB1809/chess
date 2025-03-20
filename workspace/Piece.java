@@ -50,7 +50,64 @@ public class Piece {
     //return a list of every square that is "controlled" by this piece. A square is controlled
     //if the piece capture into it legally.
     public ArrayList<Square> getControlledSquares(Square[][] board, Square start) {
-     return null;
+
+      ArrayList<Square> moves = new ArrayList<Square>();
+
+      Square s = null;
+      Square sl = null;
+
+      if ((start.getRow()+2<8) && (start.getCol()+2<8)){
+
+        s = board[start.getRow()+1][start.getCol()+1];
+        sl = board[start.getRow()+2][start.getCol()+2];
+        if (s.isOccupied() && s.getOccupyingPiece().getColor() != color ){
+          if (!sl.isOccupied()){
+            moves.add(board[start.getRow()+2][start.getCol()+2]);
+          }
+        }
+
+      }
+
+
+      if ((start.getRow()-2<=0) && (start.getCol()+2<8)){
+
+        s = board[start.getRow()-1][start.getCol()+1];
+        sl = board[start.getRow()-2][start.getCol()+2];
+        if (s.isOccupied() && s.getOccupyingPiece().getColor() != color ){
+          if (!sl.isOccupied()){
+            moves.add(board[start.getRow()-2][start.getCol()+2]);
+          }
+        }
+        
+      }
+
+     
+
+      if ((start.getRow()-2<=0) && (start.getCol()-2<8)){
+
+        s = board[start.getRow()-1][start.getCol()-1];
+        sl = board[start.getRow()-2][start.getCol()-2];
+        if (s.isOccupied() && s.getOccupyingPiece().getColor() != color){
+          if (!sl.isOccupied()){
+            moves.add(board[start.getRow()-2][start.getCol()-2]);
+          }
+        }
+        
+      }
+
+
+      if ((start.getRow()+2<=0) && (start.getCol()-2<8)){
+
+        s = board[start.getRow()+1][start.getCol()-1];
+        sl = board[start.getRow()+2][start.getCol()-2];
+        if (s.isOccupied() && s.getOccupyingPiece().getColor() != color){
+          if (!sl.isOccupied()){
+            moves.add(board[start.getRow()+2][start.getCol()-2]);
+          }
+        }
+        
+      }
+     return moves;
     }
     
 
@@ -61,6 +118,77 @@ public class Piece {
     //please note that your piece must have some sort of logic. Just being able to move to every square on the board is not
     //going to score any points.
     public ArrayList<Square> getLegalMoves(Board b, Square start){
-    	return null;
+      //start by declaring the arrayList we wish to return at the end
+      ArrayList<Square> moves = new ArrayList<Square>();
+
+      Square s = null;
+      Square sl = null;
+    
+      /*make sure the squares we are adding are in bounds. 
+      (you’d also need to check to make sure they aren’t occupied by a piece unless it’s a piece of the opposite color in which case you can capture it.
+      I leave this bit for you to figure out.*/
+      if ((start.getRow()+1<8) && (start.getCol()+1<8)){
+
+        s = b.getSquareArray()[start.getRow()][start.getCol()+1];
+        if (!s.isOccupied()){
+          moves.add(b.getSquareArray()[start.getRow()][start.getCol()+1]);
+        }
+
+      }
+
+
+      if ((start.getRow()+2<8) && (start.getCol()+2<8)){
+
+        s = b.getSquareArray()[start.getRow()+1][start.getCol()+1];
+        sl = b.getSquareArray()[start.getRow()+2][start.getCol()+2];
+        if (s.isOccupied() && s.getOccupyingPiece().getColor() != color ){
+          if (!sl.isOccupied()){
+            moves.add(b.getSquareArray()[start.getRow()+2][start.getCol()+2]);
+          }
+        }
+
+      }
+
+
+      if ((start.getRow()-2<=0) && (start.getCol()+2<8)){
+
+        s = b.getSquareArray()[start.getRow()-1][start.getCol()+1];
+        sl = b.getSquareArray()[start.getRow()-2][start.getCol()+2];
+        if (s.isOccupied() && s.getOccupyingPiece().getColor() != color ){
+          if (!sl.isOccupied()){
+            moves.add(b.getSquareArray()[start.getRow()-2][start.getCol()+2]);
+          }
+        }
+        
+      }
+
+     
+
+      if ((start.getRow()-2<=0) && (start.getCol()-2<8)){
+
+        s = b.getSquareArray()[start.getRow()-1][start.getCol()-1];
+        sl = b.getSquareArray()[start.getRow()-2][start.getCol()-2];
+        if (s.isOccupied() && s.getOccupyingPiece().getColor() != color){
+          if (!sl.isOccupied()){
+            moves.add(b.getSquareArray()[start.getRow()-2][start.getCol()-2]);
+          }
+        }
+        
+      }
+
+
+      if ((start.getRow()+2<=0) && (start.getCol()-2<8)){
+
+        s = b.getSquareArray()[start.getRow()+1][start.getCol()-1];
+        sl = b.getSquareArray()[start.getRow()+2][start.getCol()-2];
+        if (s.isOccupied() && s.getOccupyingPiece().getColor() != color){
+          if (!sl.isOccupied()){
+            moves.add(b.getSquareArray()[start.getRow()+2][start.getCol()-2]);
+          }
+        }
+        
+      }
+      
+     return moves;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
     }
-}
+  }
