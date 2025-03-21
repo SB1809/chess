@@ -51,39 +51,39 @@ public class Piece {
 
       ArrayList<Square> moves = new ArrayList<Square>();
 
-      if (color && (start.getRow()+1<8)){
+      /*if (!color && (start.getRow()+1<8)){
 
           moves.add(board[start.getRow()+1][start.getCol()]);
       }
 
 
-      if (!color && (start.getRow()+1<8)){
+      if (color && (start.getRow()+1<8)){
 
           moves.add(board[start.getRow()-1][start.getCol()]);
       }
+*/
 
-
-      if ((start.getRow()+2<8) && (start.getCol()+2<8)){
+      if ((start.getRow()+1<8) && (start.getCol()+1<8)){
    
-            moves.add(board[start.getRow()+2][start.getCol()+2]);
+            moves.add(board[start.getRow()+1][start.getCol()+1]);
       }
 
 
-      if ((start.getRow()-2>=0) && (start.getCol()+2<8)){
+      if ((start.getRow()-1>=0) && (start.getCol()+1<8)){
 
-            moves.add(board[start.getRow()-2][start.getCol()+2]);
+            moves.add(board[start.getRow()-1][start.getCol()+1]);
       }
      
 
-      if ((start.getRow()-2<=0) && (start.getCol()-2>=0)){
+      if ((start.getRow()-1>=0) && (start.getCol()-1>=0)){
 
-            moves.add(board[start.getRow()-2][start.getCol()-2]);
+            moves.add(board[start.getRow()-1][start.getCol()-1]);
       }
 
 
-      if ((start.getRow()+2<8) && (start.getCol()-2>=0)){
+      if ((start.getRow()+1<8) && (start.getCol()-1>=0)){
 
-            moves.add(board[start.getRow()+2][start.getCol()-2]); 
+            moves.add(board[start.getRow()+1][start.getCol()-1]); 
       }
      return moves;
     }
