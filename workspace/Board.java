@@ -132,10 +132,12 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
         if (sq.isOccupied()) {
             currPiece = sq.getOccupyingPiece();
             fromMoveSquare = sq;
-            if (!currPiece.getColor() && whiteTurn)
+            if (!currPiece.getColor() == whiteTurn)
+            {
+                currPiece=null;
                 return;
-            if (currPiece.getColor() && !whiteTurn)
-                return;
+            }
+                
             sq.setDisplay(false);
         }
         repaint();
@@ -152,6 +154,20 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
             // Check if the move is legal
             if (legalMoves.contains(endSquare)) {
                 // Move the piece to the new square
+                if(currPiece instanceof Piece){
+                    if(fromMoveSquare.getRow()-2 == endSquare.getRow() && fromMoveSquare.getCol()-2 == endSquare.getCol()){
+                        board[fromMoveSquare.getRow()-1][fromMoveSquare.getCol()-1].removePiece();
+                    }
+                    if(fromMoveSquare.getRow()+2 == endSquare.getRow() && fromMoveSquare.getCol()+2 == endSquare.getCol()){
+                        board[fromMoveSquare.getRow()+1][fromMoveSquare.getCol()+1].removePiece();
+                    }
+                    if(fromMoveSquare.getRow()-2 == endSquare.getRow() && fromMoveSquare.getCol()+2 == endSquare.getCol()){
+                        board[fromMoveSquare.getRow()-1][fromMoveSquare.getCol()+1].removePiece();
+                    }
+                    if(fromMoveSquare.getRow()+2 == endSquare.getRow() && fromMoveSquare.getCol()-2 == endSquare.getCol()){
+                        board[fromMoveSquare.getRow()+1][fromMoveSquare.getCol()-1].removePiece();
+                    }
+                }
                 endSquare.put(currPiece);
                 fromMoveSquare.removePiece();
                 
@@ -178,9 +194,11 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
         currX = e.getX() - 24;
         currY = e.getY() - 24;
 
-        ArrayList<Square> moves = currPiece.getLegalMoves(fromMoveSquare.getBoard(), fromMoveSquare);
-        for (Square s : moves) {
+        if(currPiece != null) {
+        ArrayList<Square> moves = currPiece.getLegalMoves(this, fromMoveSquare);
+            for (Square s : moves) {
             s.setBorder(BorderFactory.createLineBorder(Color.red));
+            }
         }
 
         repaint();
