@@ -82,8 +82,8 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
     // Set up the board such that the black pieces are on one side and the white pieces on the other.
     private void initializePieces() {
         for (int i = 0; i < 8; i++) {
-            board[1][i].put(new Piece(false, RESOURCES_BPAWN_PNG));
-            board[6][i].put(new Piece(true, RESOURCES_WPAWN_PNG));
+            board[1][i].put(new CheckerPawn(false, RESOURCES_BPAWN_PNG));
+            board[6][i].put(new CheckerPawn(true, RESOURCES_WPAWN_PNG));
         }
     }
 
@@ -131,6 +131,7 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 
         if (sq.isOccupied()) {
             currPiece = sq.getOccupyingPiece();
+            System.out.println(currPiece);
             fromMoveSquare = sq;
             if (!currPiece.getColor() == whiteTurn)
             {

@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 
 //you will need to implement two functions in this file.
 public class Piece {
-    private final boolean color;
+    protected final boolean color;
     private BufferedImage img;
     
     public Piece(boolean isWhite, String img_file) {
@@ -27,7 +27,14 @@ public class Piece {
           }
     }
     
-    
+
+    public String toString() {
+  
+      if (color)
+        return "white";
+      else
+        return "black";
+    }
 
     
     public boolean getColor() {
@@ -50,31 +57,7 @@ public class Piece {
     //Post- Returns what moves are possible for the peice to defend against.
     public ArrayList<Square> getControlledSquares(Square[][] board, Square start) {
 
-      ArrayList<Square> moves = new ArrayList<Square>();
-
-      if ((start.getRow()+1<8) && (start.getCol()+1<8)){
-   
-            moves.add(board[start.getRow()+1][start.getCol()+1]);
-      }
-
-
-      if ((start.getRow()-1>=0) && (start.getCol()+1<8)){
-
-            moves.add(board[start.getRow()-1][start.getCol()+1]);
-      }
-     
-
-      if ((start.getRow()-1>=0) && (start.getCol()-1>=0)){
-
-            moves.add(board[start.getRow()-1][start.getCol()-1]);
-      }
-
-
-      if ((start.getRow()+1<8) && (start.getCol()-1>=0)){
-
-            moves.add(board[start.getRow()+1][start.getCol()-1]); 
-      }
-     return moves;
+      return null;
     }
     
 
@@ -82,81 +65,6 @@ public class Piece {
     //Post- Returns what moves are possible for the Piece to move to.
     public ArrayList<Square> getLegalMoves(Board b, Square start){
       //start by declaring the arrayList we wish to return at the end
-      ArrayList<Square> moves = new ArrayList<Square>();
-
-      Square s = null;
-      Square sl = null;
-    
-      if (!color && (start.getRow()+1<8)){
-
-        s = b.getSquareArray()[start.getRow()+1][start.getCol()];
-        if (!s.isOccupied()){
-          moves.add(b.getSquareArray()[start.getRow()+1][start.getCol()]);
-        }
-
-      }
-      
-      if (color && (start.getRow()-1>=0)){
-
-        s = b.getSquareArray()[start.getRow()-1][start.getCol()];
-        if (!s.isOccupied()){
-          moves.add(b.getSquareArray()[start.getRow()-1][start.getCol()]);
-        }
-
-      }
-
-      if ((start.getRow()+2<8) && (start.getCol()+2<8)){
-
-        s = b.getSquareArray()[start.getRow()+1][start.getCol()+1];
-        sl = b.getSquareArray()[start.getRow()+2][start.getCol()+2];
-        if (s.isOccupied() && s.getOccupyingPiece().getColor() != color ){
-          if (!sl.isOccupied()){
-            moves.add(b.getSquareArray()[start.getRow()+2][start.getCol()+2]);
-          }
-        }
-
-      }
-
-
-      if ((start.getRow()-2>=0) && (start.getCol()+2<8)){
-
-        s = b.getSquareArray()[start.getRow()-1][start.getCol()+1];
-        sl = b.getSquareArray()[start.getRow()-2][start.getCol()+2];
-        if (s.isOccupied() && s.getOccupyingPiece().getColor() != color ){
-          if (!sl.isOccupied()){
-            moves.add(b.getSquareArray()[start.getRow()-2][start.getCol()+2]);
-          }
-        }
-        
-      }
-
-     
-
-      if ((start.getRow()-2>=0) && (start.getCol()-2>=0)){
-
-        s = b.getSquareArray()[start.getRow()-1][start.getCol()-1];
-        sl = b.getSquareArray()[start.getRow()-2][start.getCol()-2];
-        if (s.isOccupied() && s.getOccupyingPiece().getColor() != color){
-          if (!sl.isOccupied()){
-            moves.add(b.getSquareArray()[start.getRow()-2][start.getCol()-2]);
-          }
-        }
-        
-      }
-
-
-      if ((start.getRow()+2<8) && (start.getCol()-2>=0)){
-
-        s = b.getSquareArray()[start.getRow()+1][start.getCol()-1];
-        sl = b.getSquareArray()[start.getRow()+2][start.getCol()-2];
-        if (s.isOccupied() && s.getOccupyingPiece().getColor() != color){
-          if (!sl.isOccupied()){
-            moves.add(b.getSquareArray()[start.getRow()+2][start.getCol()-2]);
-          }
-        }
-        
-      }
-      
-     return moves;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+     return null;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
     }
   }
