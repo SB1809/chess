@@ -26,7 +26,7 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
     private static final String RESOURCES_WPAWN_PNG = "wpawn.png";
     private static final String RESOURCES_BPAWN_PNG = "bpawn.png";
     
-    // Logical and graphical representations of board
+    // Logical and graphical representations of board 
     private final Square[][] board;
     private final GameWindow g;
  
@@ -85,6 +85,10 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
             board[1][i].put(new CheckerPawn(false, RESOURCES_BPAWN_PNG));
             board[6][i].put(new CheckerPawn(true, RESOURCES_WPAWN_PNG));
         }
+        board[0][4].put(new King(false, RESOURCES_BKING_PNG));
+        board[7][4].put(new King(true, RESOURCES_WKING_PNG));
+        board[0][3].put(new Queen(false, RESOURCES_BQUEEN_PNG));
+        board[7][3].put(new Queen(true, RESOURCES_WQUEEN_PNG));
     }
 
     public Square[][] getSquareArray() {
@@ -143,39 +147,58 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
         }
         repaint();
     }
+    
 
     @Override
     public void mouseReleased(MouseEvent e) {
         Square endSquare = (Square) this.getComponentAt(new Point(e.getX(), e.getY()));
+        Piece taken = null;
         
-        // Check if the move is within bounds and the square is a valid target
-        if (endSquare != null && currPiece != null) {
-            ArrayList<Square> legalMoves = currPiece.getLegalMoves(fromMoveSquare.getBoard(), fromMoveSquare);
+        // Check if the move is within bounds and the square is a valid targe
+            //ArrayList<Square> legalMoves = currPiece.getLegalMoves(this, fromMoveSquare);
             
             // Check if the move is legal
-            if (legalMoves.contains(endSquare)) {
+            if (currPiece != null && currPiece.getLegalMoves(this, fromMoveSquare).contains(endSquare)) {
                 // Move the piece to the new square
-                if(currPiece instanceof Piece){
-                    if(fromMoveSquare.getRow()-2 == endSquare.getRow() && fromMoveSquare.getCol()-2 == endSquare.getCol()){
-                        board[fromMoveSquare.getRow()-1][fromMoveSquare.getCol()-1].removePiece();
+                if(endSquare.isOccupied()) {
+                    taken = endSquare.getOccupyingPiece();
                     }
-                    if(fromMoveSquare.getRow()+2 == endSquare.getRow() && fromMoveSquare.getCol()+2 == endSquare.getCol()){
-                        board[fromMoveSquare.getRow()+1][fromMoveSquare.getCol()+1].removePiece();
-                    }
-                    if(fromMoveSquare.getRow()-2 == endSquare.getRow() && fromMoveSquare.getCol()+2 == endSquare.getCol()){
-                        board[fromMoveSquare.getRow()-1][fromMoveSquare.getCol()+1].removePiece();
-                    }
-                    if(fromMoveSquare.getRow()+2 == endSquare.getRow() && fromMoveSquare.getCol()-2 == endSquare.getCol()){
-                        board[fromMoveSquare.getRow()+1][fromMoveSquare.getCol()-1].removePiece();
-                    }
-                }
                 endSquare.put(currPiece);
                 fromMoveSquare.removePiece();
                 
-                // Switch the turn to the other player
-                whiteTurn = !whiteTurn;
-            }
+                if(currPiece instanceof CheckerPawn){
+                    if(fromMoveSquare.getRow()-2 == endSquare.getRow() && fromMoveSquare.getCol()-2 == endSquare.getCol()){
+                        taken = board[fromMoveSquare.getRow()-1][fromMoveSquare.getCol()-1].getOccupyingPiece();
+                        board[fromMoveSquare.getRow()-1][fromMoveSquare.getCol()-1].removePiece();
+                    }
+                    if(fromMoveSquare.getRow()+2 == endSquare.getRow() && fromMoveSquare.getCol()+2 == endSquare.getCol()){
+                        taken = board[fromMoveSquare.getRow()+1][fromMoveSquare.getCol()+1].getOccupyingPiece();
+                        board[fromMoveSquare.getRow()+1][fromMoveSquare.getCol()+1].removePiece();
+                    }
+                    if(fromMoveSquare.getRow()-2 == endSquare.getRow() && fromMoveSquare.getCol()+2 == endSquare.getCol()){
+                        taken = board[fromMoveSquare.getRow()-1][fromMoveSquare.getCol()+1].getOccupyingPiece();
+                        board[fromMoveSquare.getRow()-1][fromMoveSquare.getCol()+1].removePiece();
+                    }
+                    if(fromMoveSquare.getRow()+2 == endSquare.getRow() && fromMoveSquare.getCol()-2 == endSquare.getCol()){
+                        taken = board[fromMoveSquare.getRow()+1][fromMoveSquare.getCol()-1].getOccupyingPiece();
+                        board[fromMoveSquare.getRow()+1][fromMoveSquare.getCol()-1].removePiece();
+                    }
+                }
+
+                if (isInCheck(whiteTurn)) {
+                    fromMoveSquare.put(currPiece);
+                    endSquare.put(taken);
+                    taken = null;
+                    // Switch the turn to the other player
+                    
+                }
+                else{
+                    whiteTurn = !whiteTurn;
+                }
+                
+            
         }
+    
         
         // Clear the visual border of all squares
         for (Square[] row : board) {
@@ -189,6 +212,7 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
         currPiece = null;
         repaint();
     }
+
 
     @Override
     public void mouseDragged(MouseEvent e) {
@@ -209,6 +233,36 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 
 
         repaint();
+    }
+
+
+    //precondition - the board is initialized and contains a king of either color. The boolean kingColor corresponds to the color of the king we wish to know the status of.
+    //postcondition - returns true of the king is in check and false otherwise.
+    public boolean isInCheck(boolean kingColor) {
+        Square king = null;
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                if (board[row][col].isOccupied() && board[row][col].getOccupyingPiece() instanceof King && board[row][col].getOccupyingPiece().getColor() == kingColor) {
+                    king = board[row][col];
+                    break;
+                }
+            }
+        }
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                if (board[row][col].isOccupied() && board[row][col].getOccupyingPiece().getColor() != kingColor) {
+                    ArrayList < Square > contSq = board[row][col].getOccupyingPiece().getControlledSquares(board, board[row][col]);
+                    if (contSq.contains(king)) {
+                        if (kingColor)
+                            System.out.println("white in check");
+                        else
+                            System.out.println("black in check");
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     @Override
